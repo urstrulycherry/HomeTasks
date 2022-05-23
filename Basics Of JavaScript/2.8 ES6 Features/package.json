@@ -1,0 +1,8 @@
+{
+  "name": "js-training",
+  "description": "JS training tasks",
+  "scripts": {
+    "test": "mocha ./test"
+  },
+  "author": "Charan"
+}
