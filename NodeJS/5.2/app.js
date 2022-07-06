@@ -5,44 +5,44 @@ const choices = {
     divide: "division",
 };
 
-function calculate(operation, data) {
+function calculate(operation, ...data) {
     switch (operation) {
         case choices.add:
-            addition(data);
+            addition(...data);
             break;
         case choices.product:
-            multiplication(data);
+            multiplication(...data);
             break;
         case choices.subtract:
-            subtraction(data);
+            subtraction(...data);
             break;
         case choices.divide:
-            division(data);
+            division(...data);
             break;
         default:
             console.log("Invalid operation");
     }
 }
 
-function addition(data) {
+function addition(...data) {
     if (!checkValid(data, data.length))
         return;
     console.log(data.join(" + "), " = ", data.reduce((acc, curr) => acc + curr));
 }
 
-function subtraction(data) {
+function subtraction(...data) {
     if (!checkValid(data, 2))
         return;
     console.log(data.join(" - "), " = ", data.reduce((acc, curr) => acc - curr));
 }
 
-function multiplication(data) {
+function multiplication(...data) {
     if (!checkValid(data, data.length))
         return;
     console.log(data.join(" * "), " = ", data.reduce((acc, curr) => acc * curr));
 }
 
-function division(data) {
+function division(...data) {
     if (!checkValid(data, 2))
         return;
     if (data[1] === 0) {
@@ -68,7 +68,5 @@ function checkValid(data, size, min = 2) {
     return true;
 }
 
-const input = process.argv.slice(3); //Removes first three params
-const operation = input[0]; //Gets operation
-const data = input.slice(1).map(Number); //Gets data 
-calculate(operation, data);
+const [, , , operation, ...data] = process.argv
+calculate(operation, ...data.map(Number));
