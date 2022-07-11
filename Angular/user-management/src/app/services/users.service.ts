@@ -1,74 +1,33 @@
-import { Injectable } from '@angular/core';
+import { map, Observable, of } from 'rxjs';
+import allUsers from 'src/Data/users';
 import { User } from 'src/models/user';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class UsersService {
-
   constructor() {
-    console.log("in UsersService");
+    console.log("in UsersService constructor");
   }
-  static users: User[] = [
-    {
-      id: '1',
-      firstName: 'John',
-      lastName: 'Doe',
-      age: 30,
-      login: 'johndoe',
-      password: 'joh****',
-      isDeleted: true
-    },
-    {
-      id: '2',
-      firstName: 'Jane',
-      lastName: 'Doe',
-      age: 25,
-      login: 'janedoe',
-      password: 'jan****',
-      isDeleted: false
-    },
-    {
-      id: '3',
-      firstName: 'Jack',
-      lastName: 'Doe',
-      age: 20,
-      login: 'jackdoe',
-      password: 'jac****',
-      isDeleted: false
-    },
-    {
-      id: '4',
-      firstName: 'Leanne',
-      lastName: 'Graham',
-      age: 15,
-      login: 'leannegraham',
-      password: 'lea****',
-      isDeleted: false
-    },
-    {
-      id: '5',
-      firstName: 'Patricia',
-      lastName: 'Lebsack',
-      age: 23,
-      login: 'patlebsack',
-      password: 'pat****',
-      isDeleted: false
-    }
-  ];
+  users = of(allUsers);
 
-  static getActiveUsers(): User[] {
-    return this.users.filter((user: User) => !user.isDeleted);
+  getAllUsers(): Observable<User[]> {
+    return this.users;
   }
 
-  static getDeletedUsers(): User[] {
-    return this.users.filter((user: User) => user.isDeleted);
+  getUserById(id: string): Observable<User> {
+    return this.users.pipe(map((users: User[]) => users.filter((user: { id: string; }) => user.id === id)[0]));
   }
 
+  getActiveUsers(): Observable<User[]> {
+    return this.users.pipe(map((users: User[]) => users.filter((user: { isDeleted: boolean; }) => !user.isDeleted)));
+  }
 
-  static setActivation(id: string, isDeleted: boolean) {
-    const userId = this.users.findIndex((user: User) => user.id === id);
-    this.users[userId].isDeleted = isDeleted;
-    console.log("service", this.users);
+  getDeletedUsers(): Observable<User[]> {
+    return this.users.pipe(map((users: User[]) => users.filter((user: { isDeleted: boolean; }) => user.isDeleted)));
+  }
+
+  setActivation(id: string, isDeleted: boolean) {
+    this.users.subscribe(users => {
+      const user = users.find(user => user.id === id);
+      user!.isDeleted = isDeleted;
+    })
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { UsersService } from 'src/app/services/users.service';
 import { User } from 'src/models/user';
 
@@ -9,16 +10,18 @@ import { User } from 'src/models/user';
 })
 export class ManageComponent implements OnInit {
 
-  constructor() {
+  userPreview!: Observable<User>;
+  allUsers!: Observable<User[]>
+
+  constructor(private userService: UsersService) {
     console.log('ManageComponent loaded.');
   }
-  userPreview: any = null;
+
   ngOnInit(): void {
-    this.allUsers = UsersService.users
-    console.log("ManageComponent ngOnInit", this.allUsers);
+    this.allUsers = this.userService.getAllUsers();
   }
-  allUsers: User[] = []
+
   showUser(id: string) {
-    this.userPreview = UsersService.users.find(user => user.id == id);
+    this.userPreview = this.userService.getUserById(id);
   }
 }

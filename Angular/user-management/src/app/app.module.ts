@@ -7,6 +7,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ActiveModule } from './modules/active/active.module';
 import { ComponentsModule } from './components/components.module';
 import { DeletedModule } from './modules/deleted/deleted.module';
+import { UsersService } from './services/users.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,9 @@ import { DeletedModule } from './modules/deleted/deleted.module';
     DeletedModule,
     ComponentsModule,
   ],
-  providers: [],
+  providers: [
+    UsersService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

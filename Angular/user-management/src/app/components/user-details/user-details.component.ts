@@ -14,7 +14,7 @@ export class UserDetailsComponent implements OnInit {
   }
 
   @Input('user')
-  user!: User;
+  user!: any;
 
   getFontColor() {
     return this.user.isDeleted ? "green" : "red";

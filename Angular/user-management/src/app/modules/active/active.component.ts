@@ -5,13 +5,10 @@ import { User } from 'src/models/user';
 @Component({
   selector: 'app-active',
   templateUrl: './active.component.html',
-  styleUrls: ['./active.component.css'],
-  providers: [UsersService]
+  styleUrls: ['./active.component.css']
 })
 export class ActiveComponent implements OnInit {
-  constructor() {
-    console.log("ActiveComponent constructor");
-
+  constructor(private userService: UsersService) {
   }
 
   ngOnInit(): void {
@@ -21,11 +18,19 @@ export class ActiveComponent implements OnInit {
   activeUsers: User[] = []
 
   loadActiveUsers() {
-    this.activeUsers = UsersService.getActiveUsers();
+    this.userService.getActiveUsers().subscribe({
+      next: (users: User[]) => {
+        console.log(users);
 
+        this.activeUsers = users;
+      },
+      error: err => console.log(err),
+      complete: () => console.log('completed')
+    });
   }
+
   deactivateUser(id: string) {
-    UsersService.setActivation(id, true);
+    this.userService.setActivation(id, true);
     this.loadActiveUsers();
   }
 }

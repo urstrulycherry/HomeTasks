@@ -8,7 +8,7 @@ import { User } from 'src/models/user';
   styleUrls: ['./deleted.component.css']
 })
 export class DeletedComponent implements OnInit {
-  constructor() { }
+  constructor(private userService: UsersService) { }
 
   ngOnInit(): void {
     this.loadDeletedUsers();
@@ -18,11 +18,13 @@ export class DeletedComponent implements OnInit {
   deletedUsers: User[] = []
 
   loadDeletedUsers() {
-    this.deletedUsers = UsersService.getDeletedUsers();
+    this.userService.getAllUsers().subscribe(users => {
+      this.deletedUsers = users.filter((user: User) => user.isDeleted);
+    })
   }
 
   activateUser(id: string) {
-    UsersService.setActivation(id, false);
+    this.userService.setActivation(id, false);
     this.loadDeletedUsers();
   }
 }

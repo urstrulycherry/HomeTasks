@@ -14,22 +14,36 @@ describe('UsersService', () => {
     expect(service).toBeTruthy();
   });
 
+
   it('should set activation to true', () => {
-    UsersService.users[0].isDeleted = false;
-    UsersService.setActivation(UsersService.users[0].id, true);
-    let finalStatus = UsersService.users[0].isDeleted;
-    expect(finalStatus).toBe(true);
+    service.setActivation('1', true);
+    let userStatus: boolean = false
+    service.getUserById('1').subscribe(
+      user => {
+        userStatus = user.isDeleted
+      }
+    )
+    expect(userStatus).toBe(true);
   });
 
   it('should set activation to false', () => {
-    UsersService.users[0].isDeleted = true;
-    UsersService.setActivation(UsersService.users[0].id, false);
-    let finalStatus = UsersService.users[0].isDeleted;
-    expect(finalStatus).toBe(false);
+    service.setActivation('2', false);
+    let userStatus: boolean = true
+    service.getUserById('2').subscribe(
+      user => {
+        userStatus = user.isDeleted
+      }
+    )
+    expect(userStatus).toBe(false);
   });
 
   it('should count deleted users to be 1', () => {
-    let finalStatus = UsersService.getDeletedUsers().length;
-    expect(finalStatus).toBe(1);
+    let count: number = 0;
+    service.getDeletedUsers().subscribe(
+      users => {
+        count = users.length
+      }
+    )
+    expect(count).toBe(1);
   })
 });

@@ -17,7 +17,8 @@ export class UsersListComponent implements OnInit {
   btnText!: string;
 
   @Input('usersList')
-  usersList: User[] = []
+
+  usersList: any;
 
   @Output('showUser') showUser = new EventEmitter<any>();
 

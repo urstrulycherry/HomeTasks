@@ -27,5 +27,4 @@ describe('AppComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('.navbar')).toBeTruthy();
   })
-
 });

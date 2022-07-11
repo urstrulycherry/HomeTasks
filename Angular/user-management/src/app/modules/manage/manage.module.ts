@@ -9,6 +9,7 @@ import { User } from 'src/models/user';
 
 
 @NgModule({
+  providers: [],
   declarations: [
     ManageComponent
   ],
