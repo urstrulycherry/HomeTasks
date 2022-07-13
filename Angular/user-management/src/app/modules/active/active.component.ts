@@ -1,4 +1,5 @@
 import { Component, OnInit, Optional } from '@angular/core';
+import { Observable } from 'rxjs';
 import { UsersService } from 'src/app/services/users.service';
 import { User } from 'src/models/user';
 
@@ -15,18 +16,10 @@ export class ActiveComponent implements OnInit {
     this.loadActiveUsers();
   }
 
-  activeUsers: User[] = []
+  activeUsers!: Observable<User[]>
 
   loadActiveUsers() {
-    this.userService.getActiveUsers().subscribe({
-      next: (users: User[]) => {
-        console.log(users);
-
-        this.activeUsers = users;
-      },
-      error: err => console.log(err),
-      complete: () => console.log('completed')
-    });
+    this.activeUsers = this.userService.getActiveUsers()
   }
 
   deactivateUser(id: string) {

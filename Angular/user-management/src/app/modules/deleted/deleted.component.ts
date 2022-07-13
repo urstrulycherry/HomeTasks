@@ -1,4 +1,5 @@
 import { Component, OnInit, Optional } from '@angular/core';
+import { Observable } from 'rxjs';
 import { UsersService } from 'src/app/services/users.service';
 import { User } from 'src/models/user';
 
@@ -15,12 +16,10 @@ export class DeletedComponent implements OnInit {
     console.log("Ng", this.deletedUsers);
   }
 
-  deletedUsers: User[] = []
+  deletedUsers!: Observable<User[]>
 
   loadDeletedUsers() {
-    this.userService.getAllUsers().subscribe(users => {
-      this.deletedUsers = users.filter((user: User) => user.isDeleted);
-    })
+    this.deletedUsers = this.userService.getDeletedUsers()
   }
 
   activateUser(id: string) {
